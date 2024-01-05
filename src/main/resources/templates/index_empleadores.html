@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS -->
+    <!--/*/ <th:block th:include="fragments/componentes.html :: head">
+    </th:block> /*/-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/index_style.css}" href="/css/index_style.css" type="text/css">
+    <title>Proyecto Egg</title>
+</head>
+
+<body>
+    <!-- NAV -->
+    <div th:replace="/fragments/componentes.html :: navbar"></div>
+
+    <div class="index pb-4 color-4">
+        <h1 class="text-center py-2">Proyecto</h1>
+        <div class="text-center">
+            <h2 class="text-center py-3 h2">La solución más rápida a tu problema... <br> ¡la encontras acá!</h2>
+            <div class="btn-group">
+                <a class="btn btn-dark" href="/busquedaEmpleo">Empleos</a>
+                <a class="btn btn-dark" href="/busquedaTrabajadores/todos" sec:authorize="hasRole('ROLE_EMPLEADOR')">Trabajadores</a>
+                <a class="btn btn-dark" href="/busquedaEmpleadores" sec:authorize="hasRole('ROLE_TRABAJADOR')">Empleadores</a>
+            </div>
+            <h1 class="h1">Empleadores</h1>
+
+            <!-- <div class="container wrap-busquedas mb-5">
+
+                <section class="empleadores">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Apellido</th>
+                                <th>Genero</th>
+                                <th>Fecha de nacimiento</th>
+                                <th>Telefono</th>
+                                <th>Presentación</th>
+                                <th>Zona</th>
+                                <th>Contacto</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:if="${empleadores.empty}">
+                                <td colspan="9" class="text-center">No hay trabajadores todavía!</td>
+                            </tr>
+                            <tr th:each="empleador, itemStat : *{empleadores}">
+                                <td><span th:text="${empleador.nombre}"> Nombre </span></td>
+                                <td><span th:text="${empleador.apellido}"> Apellido </span></td>
+                                <td><span th:text="${empleador.genero}"> Genero </span></td>
+                                <td><span th:text="${empleador.fechaNacimiento}"> Fecha de nacimiento </span></td>
+                                <td><span th:text="${empleador.telefono}"> Telefono </span></td>
+                                <td><span th:text="${empleador.tipo}"> Tipo </span></td>
+                                <td><span th:text="${empleador.zona}"> Zona </span></td>
+                                <td><a class="btn btn-dark" th:href="${'/empleador/perfil/'+empleador.id}"> Perfil </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+            </div> -->
+
+            <div class="container">
+                <div class="flex flex-wrap space-between" style="margin: -7px;">
+                    <!-- <h4 class="bold mb-3 text-decoration-underline">Empleadores</h4> -->
+                    <div class="row">
+                        <div th:if="${empleadores.empty}">
+                            <h4 class="text-center">No hay trabajadores todavía!</h4>
+                        </div>
+                        <div class="col-sm-6" th:each="empleador, itemStat : *{empleadores}" >
+                            <div class="card mb-2" 
+                            style="background-color: #29496b9c;">
+                                <div class="card-body">
+                                    <h4 class=""><strong class="" th:text="${empleador.nombre + ' ' + empleador.apellido}+ ' | '"></strong><span class="color-hierarchy3" th:text="${empleador.zona}"></span></h4>
+                                    <div class="mb-4">
+                                        <span th:text="${empleador.tipo}" style="color: white;"></span>
+                                        <span class="badge bg-success mx-3" th:text="${empleador.telefono}"></span>
+                                    </div>
+                                    <a class="btn btn-dark" th:href="${'/empleador/perfil/'+empleador.id}"> Perfil </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="/fragments/componentes.html :: footer"></div>
+</body>
+
+</html>

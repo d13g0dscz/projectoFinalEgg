@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS -->
+    <!--/*/ <th:block th:include="fragments/componentes.html :: head">
+    </th:block> /*/-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/index_style.css}" href="/css/index_style.css" type="text/css">
+    <title>Proyecto Egg</title>
+</head>
+
+<body>
+    <!-- NAV -->
+    <div th:replace="/fragments/componentes.html :: navbar"></div>
+
+    <div class="index color-4">
+
+        <!-- <h1 class="text-center py-2">Proyecto</h1> -->
+
+        <div class="text-center">
+
+            <h2 class="text-center py-3 h2">La solución más rápida a tu problema... <br> ¡la encontras acá!</h2>
+            <div class="btn-group">
+                <a class="btn btn-dark" href="/busquedaEmpleo">Empleos</a>
+                <a class="btn btn-dark" href="/busquedaTrabajadores/todos"
+                    sec:authorize="hasRole('ROLE_EMPLEADOR')">Trabajadores</a>
+                <a class="btn btn-dark" href="/busquedaEmpleadores"
+                    sec:authorize="hasRole('ROLE_TRABAJADOR')">Empleadores</a>
+            </div>
+            <h1 class="h1">Trabajadores disponibles en este momento:</h1>
+
+            <!-- categorias de empleados disponibles, la ídea es que se vea diferente y por categorías -->
+            <div class="container wrap">
+                <div class="categorias">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="collapse"
+                        data-bs-target="#demo">Categorias</button>
+                    <div id="demo" class="collapse">
+                        <div class="btn-group" th:each="oficio : ${T(com.Grupo9.ProyectoFinal.Enum.Oficio).values()}">
+                            <a type="button" class="btn btn-dark" th:href="${'/busquedaTrabajadores/'+oficio}"
+                                th:text="${oficio}"></a>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <a type="button"  th:href="${'/busquedaTrabajadores1/'+ 'todos'}"   class="btn btn-primary">Todos</a>
+                    <a type="button" th:href="${'/busquedaTrabajadores1/'+'hombres'}" class="btn btn-primary">Hombres</a>
+                    <a type="button" th:href="${'/busquedaTrabajadores1/'+'mujeres'}" class="btn btn-primary">Mujeres</a>
+                </div>
+                
+                
+                
+                <section class="busquedas">
+                    <div class="mx-auto" th:if="${trabajadores.empty}">
+                        <div class="alert alert-danger">No hay trabajadores disponibles!</div>
+                    </div>
+                    <div class="trabajadores d-grid" th:each="trabajador, itemStat : *{trabajadores}"
+                        th:if="${trabajador.disponible == true}">
+                        <div class="card">
+                            <img id="image" th:src="${'/img/'+trabajador.oficio+'.png'}"
+                                th:alt="${'tarjeta de '+trabajador.nombre}" class="card-img-top mx-auto" width="100"
+                                height="100">
+                            <div class="card-body">
+                                <span th:text="${trabajador.oficio}"> Oficio </span>
+                                <h3 class="card-title" th:text="${trabajador.nombre+' '+trabajador.apellido}">
+                                    Nombre</h3>
+                                <!-- <span>Skills:</span> -->
+                                <p class="card-text" th:text="${trabajador.skills}"></p>
+                                <span>Licencia:</span>
+                                <span th:text="${{trabajador.licencia}? 'Si' : 'No'}"> Licencia </span>
+                                <br>
+                                <!-- <span> Genero: </span> -->
+                                <span th:text="${trabajador.zona +' | '}"> </span>
+                                <span th:text="${trabajador.telefono}"> </span>
+                                
+                                
+                                </div>
+                                <div class="card-footer">
+                                    <a th:href="${'/trabajador/perfil/'+trabajador.id}" class="btn btn-dark btn-sm " target="_blank">Perfil</a>
+                                </div>
+                                <div class="card-footer">       
+                                    <a th:href="${'https://api.whatsapp.com/send?phone=549'+trabajador.telefono+'&text=Hola%20'+trabajador.nombre + ' ' + trabajador.apellido +',&nbsp;te&nbsp;contacto&nbsp;por&nbsp;tu&nbsp;perfil&nbsp;de&nbsp;PROYECTO,&nbsp;necesito&nbsp;contratar&nbsp;tus&nbsp;servicios'}" class="btn btn-success btn-sm " target="_blank">whatsapp</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+    <div th:replace="/fragments/componentes.html :: footer"></div>
+</body>
+
+</html>
